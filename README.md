@@ -1,9 +1,10 @@
 # NET-Database query layer
-A thin database layer to make more faster queries (.NET C#)
+A thin database layer to make more easy queries (.NET C#)
 
 ###License###
 
 MIT License:
+http://opensource.org/licenses/MIT
 
 Copyright (c) 2015, Omar del Valle ( http://odelvalle.com )
 All rights reserved.

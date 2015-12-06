@@ -49,7 +49,7 @@ namespace ADO.Query.Helper
 
         public static IQueryRunner CreateHelper(string providerAlias)
         {
-            CreateHelper(providerAlias, null);
+            return CreateHelper(providerAlias, null);
         }
 
         public static IQueryRunner CreateHelper( string providerAlias, IQueryMappers mapper )

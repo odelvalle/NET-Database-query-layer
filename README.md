@@ -88,8 +88,8 @@ public interface ISqlQuery
 }
 ```
 
-Expression: Es el SQL que se desea ejecutar
-Parameters: Un diccionario que contiene los parámetros usados en la consulta
+- *Expression*: Es el SQL que se desea ejecutar
+- *Parameters*: Un diccionario que contiene los parámetros usados en la consulta
 
 **Creando mi primera Query**
 ```csharp
@@ -146,7 +146,6 @@ class QueryWithParameters : ISqlQuery
 ```
 
 **Onteniendo objetos desde la consulta**
-
 NET-Database query layer se apoya en una rama del proyecto Slapper.AutoMapper https://github.com/randyburden/Slapper.AutoMapper publicada en Github https://github.com/odelvalle/Slapper.AutoMapper. Esta librería permite mediante definiciones de nombres, convertir objetos dinámicos en tipos estáticos. 
 
 Las consultas que obtienen directamente objetos de transferencia de datos, implementan la interfaz ISqlSpecification que a su vez hereda de ISqlQuery
@@ -156,9 +155,9 @@ public interface ISqlSpecification<out TResult> : ISqlQuery
    TResult MapResult(IQueryMappers mapper, dynamic source);
 }
 ```
-
 Esta interfaz incluye un método que permite realizar el mapeo entre el resultado de la consulta y el objeto de salida
-Creando consultas que retornan un objeto
+
+**Creando consultas que retornan un objeto**
 
 **Ejemplo de DTO de salida**
 ```csharp
@@ -206,7 +205,6 @@ public class QuerySingleSpecification : ISqlSpecification<SimpleDto>
     public IDictionary<string, object> Parameters { get; private set; }
 }
 ```
-
 El mapeo de consultas a objetos DTO se realiza mediante la interfaz IQueryMapper, permitiendo su adaptación a otros mappers distintos a Slapper.AutoMapper
 ```csharp
 public interface IQueryMappers
@@ -216,12 +214,11 @@ public interface IQueryMappers
     TDestination MapDynamicToFirstOrDefault<TDestination>(IList<object> source) where TDestination : class;
 }
 ```
-
 Esta interfaz permite 3 formas de obtener DTOs
 
-MapDynamicToList: Permite retornar una lista de DTO
-MapDynamicToSingle: Permite obtener un único DTO de salida, si la consulta retorna más de una fila o ninguna, este método retorna una excepción
-MapDynamicToFirstOrDefault: Retorna la primera fila de la consulta convertida a un DTO, en caso de no obtener respuesta, retorna NULL
+- *MapDynamicToList*: Permite retornar una lista de DTO
+- *MapDynamicToSingle*: Permite obtener un único DTO de salida, si la consulta retorna más de una fila o ninguna, este método retorna una excepción
+- *MapDynamicToFirstOrDefault*: Retorna la primera fila de la consulta convertida a un DTO, en caso de no obtener respuesta, retorna NULL
 
 **Obteniendo un objeto paginado mediante la consulta**
 En el caso del paginado, las consultas implementan la interfaz ISqlPageSpecification
@@ -233,7 +230,6 @@ public interface ISqlPageSpecification<out T> : ISqlSpecification<T>
    int ItemsPerPage { get; }
 }
 ```
-
 Esta interfaz permite incluir 2 Query a la base de datos, la que retorna el total de filas y la que retorna los datos. Las propiedades Page y ItemsPerPage son para su uso dentro del SQL que desea ejecutar. NET-Database query layer no realiza la paginación, tan solo facilita la encapsulación de la lógica.
 
 El resultado de una consulta paginada es retornada mediante un objeto PageSqlResult<T>

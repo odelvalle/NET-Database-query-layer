@@ -77,6 +77,10 @@ var queryRunner = container.Resolve<IAdoHelper>();
 ```
 Un método sobre-cargado de esta factoría permite crear una instancia sin necesidad de incluir un objeto Mapper. Para estos casos solo se podrá usar NET-Database layer query para obtener resultados encapsulados en Datatable, Datareader o Scalar 
 
+```csharp
+var queryRunner = AdoHelper.CreateHelper("MsSQL");
+```
+
 ###Modelo de consultas###
 
 Todo el modelo de consulta parte de la interfaz ISqlQuery

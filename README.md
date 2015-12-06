@@ -145,7 +145,7 @@ class QueryWithParameters : ISqlQuery
  }
 ```
 
-**Onteniendo objetos desde la consulta**
+**Obteniendo objetos desde la consulta**
 NET-Database query layer se apoya en una rama del proyecto Slapper.AutoMapper https://github.com/randyburden/Slapper.AutoMapper publicada en Github https://github.com/odelvalle/Slapper.AutoMapper. Esta librería permite mediante definiciones de nombres, convertir objetos dinámicos en tipos estáticos. 
 
 Las consultas que obtienen directamente objetos de transferencia de datos, implementan la interfaz ISqlSpecification que a su vez hereda de ISqlQuery

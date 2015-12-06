@@ -17,19 +17,18 @@
 
         public IEnumerable<TDestination> MapDynamicToList<TDestination>(List<object> source) where TDestination : class
         {
-            return AutoMapper.MapDynamic<TDestination>(source);
+            return (source != null) ? AutoMapper.MapDynamic<TDestination>(source) : null;
         }
 
         public TDestination MapDynamicToSingle<TDestination>(IList<object> source) where TDestination : class
         {
-            var result = AutoMapper.MapDynamic<TDestination>(source);
-            return result.Single();
+            if (source == null) throw new InvalidOperationException("Query result is empty...");
+            return AutoMapper.MapDynamic<TDestination>(source).Single();
         }
 
         public TDestination MapDynamicToFirstOrDefault<TDestination>(IList<object> source) where TDestination : class
         {
-            var result = AutoMapper.MapDynamic<TDestination>(source);
-            return result.FirstOrDefault();
+            return source == null ? null : AutoMapper.MapDynamic<TDestination>(source).FirstOrDefault();
         }
 
         #endregion

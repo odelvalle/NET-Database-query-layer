@@ -24,7 +24,7 @@ namespace ADO.Query.Test
         [TestMethod]
         public void TestDataTableQuery()
         {
-            var adoHelper = new AdoMockHelper
+            var queryRunner = new MockQueryRunner
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -36,7 +36,7 @@ namespace ADO.Query.Test
                 } 
             };
 
-            var dt = adoHelper.ExecuteDataTable(new QuerySimple());
+            var dt = queryRunner.ExecuteDataTable(new QuerySimple());
             
             Assert.IsNotNull(dt);
             Assert.IsNotNull(dt.Rows);
@@ -49,7 +49,7 @@ namespace ADO.Query.Test
         [TestMethod]
         public void TestScalarQuery()
         {
-            var adoHelper = new AdoMockHelper
+            var queryRunner = new MockQueryRunner
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -61,14 +61,14 @@ namespace ADO.Query.Test
                 }
             };
 
-            var id = adoHelper.ExecuteScalar<int>(new QuerySimple());
+            var id = queryRunner.ExecuteScalar<int>(new QuerySimple());
             Assert.AreEqual(1, id);
         }
 
         [TestMethod]
         public void TestDataReaderQuery()
         {
-            var adoHelper = new AdoMockHelper
+            var queryRunner = new MockQueryRunner
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -80,7 +80,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var dr = adoHelper.ExecuteReader(new QuerySimple());
+            var dr = queryRunner.ExecuteReader(new QuerySimple());
 
             Assert.IsNotNull(dr);
             Assert.IsTrue(dr.Read());
@@ -92,7 +92,7 @@ namespace ADO.Query.Test
         [TestMethod]
         public void TestMapperQuery()
         {
-            var adoHelper = new AdoMockHelper(new QueryMapper())
+            var queryRunner = new MockQueryRunner(new QueryMapper())
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -109,7 +109,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var result = adoHelper.Execute(new QuerySpecification());
+            var result = queryRunner.Execute(new QuerySpecification());
            
             Assert.IsNotNull(result);
             // ReSharper disable PossibleMultipleEnumeration
@@ -126,7 +126,7 @@ namespace ADO.Query.Test
         [ExpectedException(typeof(InvalidOperationException))]
         public void TestSingleMapperFailureWithMorethanOneElementQuery()
         {
-            var adoHelper = new AdoMockHelper(new QueryMapper())
+            var queryRunner = new MockQueryRunner(new QueryMapper())
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -143,13 +143,13 @@ namespace ADO.Query.Test
                 }
             };
 
-            adoHelper.Execute(new QuerySingleSpecification());
+            queryRunner.Execute(new QuerySingleSpecification());
         }
 
         [TestMethod]
         public void TestSingleQuery()
         {
-            var adoHelper = new AdoMockHelper(new QueryMapper())
+            var queryRunner = new MockQueryRunner(new QueryMapper())
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -161,7 +161,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var singleDto = adoHelper.Execute(new QuerySingleSpecification());
+            var singleDto = queryRunner.Execute(new QuerySingleSpecification());
 
             Assert.IsNotNull(singleDto);
             Assert.AreEqual(1, singleDto.Id);
@@ -171,19 +171,19 @@ namespace ADO.Query.Test
         [TestMethod]
         public void TestFirstOrDefaultEmptyQuery()
         {
-            var adoHelper = new AdoMockHelper(new QueryMapper())
+            var queryRunner = new MockQueryRunner(new QueryMapper())
             {
                 ReturnValues = new List<IDictionary<string, object>>()
             };
 
-            var singleDto = adoHelper.Execute(new QueryFirstOrDefaultSpecification());
+            var singleDto = queryRunner.Execute(new QueryFirstOrDefaultSpecification());
             Assert.IsNull(singleDto);
         }
 
         [TestMethod]
         public void TestFirstOrDefaultQuery()
         {
-            var adoHelper = new AdoMockHelper(new QueryMapper())
+            var queryRunner = new MockQueryRunner(new QueryMapper())
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -200,7 +200,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var singleDto = adoHelper.Execute(new QueryFirstOrDefaultSpecification());
+            var singleDto = queryRunner.Execute(new QueryFirstOrDefaultSpecification());
 
             Assert.IsNotNull(singleDto);
             Assert.AreEqual(1, singleDto.Id);
@@ -210,7 +210,7 @@ namespace ADO.Query.Test
         [TestMethod]
         public void TestPageQuery()
         {
-            var adoHelper = new AdoMockHelper(new QueryMapper())
+            var queryRunner = new MockQueryRunner(new QueryMapper())
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -227,7 +227,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var pagedList = adoHelper.Execute(new QueryPageSpecification(page:1, itemsPerPages: 2));
+            var pagedList = queryRunner.Execute(new QueryPageSpecification(page: 1, itemsPerPages: 2));
 
             Assert.IsNotNull(pagedList);
             Assert.AreEqual(2, pagedList.Result.Count());
@@ -239,7 +239,7 @@ namespace ADO.Query.Test
         [ExpectedException(typeof(InvalidCastException))]
         public void TestPageFailureCountQuery()
         {
-            var adoHelper = new AdoMockHelper(new QueryMapper())
+            var queryRunner = new MockQueryRunner(new QueryMapper())
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -256,7 +256,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            adoHelper.Execute(new QueryPageSpecification(page: 1, itemsPerPages: 2));
+            queryRunner.Execute(new QueryPageSpecification(page: 1, itemsPerPages: 2));
         }
     }
 }

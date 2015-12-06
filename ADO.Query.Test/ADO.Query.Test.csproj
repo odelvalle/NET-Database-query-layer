@@ -77,7 +77,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="AdoMocks\AdoMockHelper.cs" />
+    <Compile Include="AdoMocks\MockQueryRunner.cs" />
     <Compile Include="AdoMocks\MockDataReader.cs" />
     <Compile Include="AdoMocks\MockParameters.cs" />
     <Compile Include="QueryTest.cs" />

@@ -7,7 +7,7 @@ namespace ADO.Query.Helper
 
     using ADO.Query.Mapper;
 
-    public class MsSql : AdoHelper
+    public class MsSql : QueryRunner
     {
         public MsSql(IQueryMappers mapper) : base(mapper)
         {

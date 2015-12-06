@@ -3,7 +3,7 @@ namespace ADO.Query.Helper
     using System.Data;
     using ADO.Query.SqlQuery;
 
-    public interface IAdoHelper
+    public interface IQueryRunner
     {
         IDbConnection GetConnection();
 

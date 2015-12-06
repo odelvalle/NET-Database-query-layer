@@ -16,7 +16,7 @@ namespace ADO.Query.Test
         [TestMethod]
         public void TestParametersInQuery()
         {
-            var adoHelper = new AdoMockHelper
+            var queryRunner = new MockQueryRunner
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -28,15 +28,15 @@ namespace ADO.Query.Test
                 }
             };
 
-            adoHelper.ExecuteScalar<int>(new QueryWithParameters(1, "Test"));
+            queryRunner.ExecuteScalar<int>(new QueryWithParameters(1, "Test"));
 
-            Assert.IsNotNull(adoHelper.Parameters.SingleOrDefault(p => p.ParameterName == "id"));
-            Assert.IsNotNull(adoHelper.Parameters.SingleOrDefault(p => p.ParameterName == "name"));
+            Assert.IsNotNull(queryRunner.Parameters.SingleOrDefault(p => p.ParameterName == "id"));
+            Assert.IsNotNull(queryRunner.Parameters.SingleOrDefault(p => p.ParameterName == "name"));
 
 
             // ReSharper disable PossibleNullReferenceException
-            var id = Convert.ToInt32(adoHelper.Parameters.SingleOrDefault(p => p.ParameterName == "id").Value);
-            var name = Convert.ToString(adoHelper.Parameters.SingleOrDefault(p => p.ParameterName == "name").Value);
+            var id = Convert.ToInt32(queryRunner.Parameters.SingleOrDefault(p => p.ParameterName == "id").Value);
+            var name = Convert.ToString(queryRunner.Parameters.SingleOrDefault(p => p.ParameterName == "name").Value);
             // ReSharper restore PossibleNullReferenceException
 
             Assert.AreEqual(1, id);
@@ -46,7 +46,7 @@ namespace ADO.Query.Test
         [TestMethod]
         public void TestNullParametersInQuery()
         {
-            var adoHelper = new AdoMockHelper
+            var queryRunner = new MockQueryRunner
             {
                 ReturnValues = new List<IDictionary<string, object>>
                 {
@@ -58,12 +58,12 @@ namespace ADO.Query.Test
                 }
             };
 
-            adoHelper.ExecuteScalar<int>(new QueryWithParameters(1, null));
+            queryRunner.ExecuteScalar<int>(new QueryWithParameters(1, null));
 
-            Assert.IsNotNull(adoHelper.Parameters.SingleOrDefault(p => p.ParameterName == "name"));
+            Assert.IsNotNull(queryRunner.Parameters.SingleOrDefault(p => p.ParameterName == "name"));
 
             // ReSharper disable PossibleNullReferenceException
-            Assert.AreEqual(DBNull.Value, adoHelper.Parameters.SingleOrDefault(p => p.ParameterName == "name").Value);
+            Assert.AreEqual(DBNull.Value, queryRunner.Parameters.SingleOrDefault(p => p.ParameterName == "name").Value);
             // ReSharper restore PossibleNullReferenceException
         }
     }

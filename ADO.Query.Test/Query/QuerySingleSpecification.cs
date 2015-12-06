@@ -16,7 +16,7 @@ namespace ADO.Query.Test.Query
 
         public SimpleDto MapResult(IQueryMappers mapper, dynamic source)
         {
-            return (source != null) ? mapper.MapDynamicToSingle<SimpleDto>(source) : null;
+            return mapper.MapDynamicToSingle<SimpleDto>(source);
         }
 
         public string Expression { get; private set; }

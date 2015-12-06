@@ -53,10 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\DataReaderToDynamic.cs" />
-    <Compile Include="Helper\AdoHelper.cs" />
+    <Compile Include="Helper\QueryRunner.cs" />
     <Compile Include="Helper\ConfigurationMissingException.cs" />
     <Compile Include="Helper\DataAccessSectionHandler.cs" />
-    <Compile Include="Helper\IAdoHelper.cs" />
+    <Compile Include="Helper\IQueryRunner.cs" />
     <Compile Include="Helper\MsSql.cs" />
     <Compile Include="Helper\MySql.cs" />
     <Compile Include="Helper\PgSql.cs" />

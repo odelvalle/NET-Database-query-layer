@@ -10,15 +10,15 @@
 
     using Rhino.Mocks;
 
-    public class AdoMockHelper : AdoHelper
+    public class MockQueryRunner : QueryRunner
     {
         private IList<IDataParameter> parameters;
  
-        public AdoMockHelper() : this(null)
+        public MockQueryRunner() : this(null)
         {            
         }
 
-        public AdoMockHelper(IQueryMappers mapper) : base(mapper)
+        public MockQueryRunner(IQueryMappers mapper) : base(mapper)
         {
         }
 

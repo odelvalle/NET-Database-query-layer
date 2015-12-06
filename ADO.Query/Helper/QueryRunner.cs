@@ -12,7 +12,7 @@ namespace ADO.Query.Helper
     using ADO.Query.Mapper;
     using ADO.Query.SqlQuery;
 
-    public abstract class AdoHelper : IAdoHelper
+    public abstract class QueryRunner : IQueryRunner
     {
         private enum AdoConnectionOwnership	
         {
@@ -29,7 +29,7 @@ namespace ADO.Query.Helper
 
         #endregion
 
-        protected AdoHelper(IQueryMappers mapper)
+        protected QueryRunner(IQueryMappers mapper)
         {
             this.mapper = mapper;
         }
@@ -47,7 +47,12 @@ namespace ADO.Query.Helper
 
         #region - Factory -
 
-        public static IAdoHelper CreateHelper( string providerAlias, IQueryMappers mapper )
+        public static IQueryRunner CreateHelper(string providerAlias)
+        {
+            CreateHelper(providerAlias, null);
+        }
+
+        public static IQueryRunner CreateHelper( string providerAlias, IQueryMappers mapper )
         {
             try
             {
@@ -64,9 +69,9 @@ namespace ADO.Query.Helper
                 if (daType == null) throw new NullReferenceException("Null Reference in Provider type configuration Session.");
 
                 var provider =  Activator.CreateInstance(daType, mapper);
-                if (provider is AdoHelper)
+                if (provider is QueryRunner)
                 {
-                    return provider as IAdoHelper;
+                    return provider as IQueryRunner;
                 }
 
                 throw new Exception( "The provider specified does not extends the AdoHelper abstract class." );

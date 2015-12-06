@@ -11,7 +11,7 @@
     /// Clase que hereda de AdoHelper e implementa los métodos necesarios para
     /// trabajar con Postgre como servidor de datos.
     /// </summary>
-    public class PgSql : AdoHelper
+    public class PgSql : QueryRunner
     {
         public PgSql(IQueryMappers mapper) : base(mapper)
         {

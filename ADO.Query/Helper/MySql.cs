@@ -7,7 +7,7 @@ namespace ADO.Query.Helper
 
     using global::MySql.Data.MySqlClient;
 
-    public sealed class MySql : AdoHelper
+    public sealed class MySql : QueryRunner
     {
         public MySql(IQueryMappers mapper) : base(mapper)
         {

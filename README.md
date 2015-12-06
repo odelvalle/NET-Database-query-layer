@@ -264,6 +264,9 @@ var singleDto = queryRunner.Execute(new QuerySingleSpecification());
 // Retorna PageSqlResult<SimpleDto>
 var pagedList = queryRunner.Execute(new QueryPageSpecification(page:1, itemsPerPages: 2));
 ```
+###Soporte para ejecutar procedimientos almacenados###
+
+De momento no se soporta la ejecución de procedimientos almacenados
 
 Enjoy ;)
 

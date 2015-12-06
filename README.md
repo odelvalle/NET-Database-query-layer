@@ -222,7 +222,7 @@ public interface IQueryMappers
 Esta interfaz permite 3 formas de obtener DTOs
 
 - *MapDynamicToList*: Permite retornar una lista de DTO
-- *MapDynamicToSingle*: Permite obtener un único DTO de salida, si la consulta retorna más de una fila o ninguna, este método retorna una excepción
+- *MapDynamicToSingle*: Permite obtener un único DTO de salida, si la consulta retorna más de una fila o ninguna, este método lanza un error
 - *MapDynamicToFirstOrDefault*: Retorna la primera fila de la consulta convertida a un DTO, en caso de no obtener respuesta, retorna NULL
 
 **Obteniendo un objeto paginado mediante la consulta**

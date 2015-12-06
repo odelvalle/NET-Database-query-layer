@@ -36,7 +36,7 @@ Para más información sobre CQRS: http://martinfowler.com/bliki/CQRS.html
 </configSections>
 
 <daProvider>
-	<daProvider alias="MsSQL" type="ADO.Query.Helper.MySql, ADO.Query" connectionStringName="DBConnection" />
+	<daProvider alias="MySQL" type="ADO.Query.Helper.MySql, ADO.Query" connectionStringName="DBConnection" />
 </daProvider>
 
 <connectionStrings>
@@ -51,7 +51,7 @@ Para más información sobre CQRS: http://martinfowler.com/bliki/CQRS.html
 </configSections>
 
 <daProvider>
-	<daProvider alias="MsSQL" type="ADO.Query.Helper.PgSql, ADO.Query" connectionStringName="DBConnection" />
+	<daProvider alias="PgSQL" type="ADO.Query.Helper.PgSql, ADO.Query" connectionStringName="DBConnection" />
 </daProvider>
 
 <connectionStrings>
@@ -65,7 +65,6 @@ NET-Database query layer cuenta con una factoría que le permite crear la instan
 ```csharp
 var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
 ```
-
 El primer parámetro usado en la factoría es el alias declarado en la configuración. El segundo parámetro es la instancia de una clase que permite mapear el resultado de consultas directamente con objetos de transferencia de datos (DTO)
 
 En el caso de usar inyección de dependencia, también se debe usar esta factoría (Ejemplo con Unity)
@@ -76,6 +75,7 @@ container.RegisterType<IAdoHelper>(new InjectionFactory(c => AdoHelper.CreateHel
 
 var queryRunner = container.Resolve<IAdoHelper>();
 ```
+Un método sobre-cargado de esta factoría permite crear una instancia sin necesidad de incluir un objeto Mapper. Para estos casos solo se podrá usar NET-Database layer query para obtener resultados encapsulados en Datatable, Datareader o Scalar 
 
 ###Modelo de consultas###
 
@@ -115,7 +115,7 @@ var dt = queryRunner.ExecuteDataTable(new QuerySimple());
 **Obteniendo un Datareader**
 ```csharp
 var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
-var dr = adoHelper.ExecuteReader(new QuerySimple());
+var dr = queryRunner.ExecuteReader(new QuerySimple());
 ```
 
 **Obteniendo la primera columna de la primera fila del resultado de la consulta**
@@ -146,6 +146,7 @@ class QueryWithParameters : ISqlQuery
 ```
 
 **Obteniendo objetos desde la consulta**
+
 NET-Database query layer se apoya en una rama del proyecto Slapper.AutoMapper https://github.com/randyburden/Slapper.AutoMapper publicada en Github https://github.com/odelvalle/Slapper.AutoMapper. Esta librería permite mediante definiciones de nombres, convertir objetos dinámicos en tipos estáticos. 
 
 Las consultas que obtienen directamente objetos de transferencia de datos, implementan la interfaz ISqlSpecification que a su vez hereda de ISqlQuery
@@ -221,6 +222,7 @@ Esta interfaz permite 3 formas de obtener DTOs
 - *MapDynamicToFirstOrDefault*: Retorna la primera fila de la consulta convertida a un DTO, en caso de no obtener respuesta, retorna NULL
 
 **Obteniendo un objeto paginado mediante la consulta**
+
 En el caso del paginado, las consultas implementan la interfaz ISqlPageSpecification
 ```csharp
 public interface ISqlPageSpecification<out T> : ISqlSpecification<T>
@@ -246,16 +248,16 @@ public class PageSqlResult<T>
 
 **Ejecutando consultas que retornan DTOs**
 
-Retorna IEnumerable<SimpleDto>
 ```csharp
+// Retorna un IEnumerable<SimpleDto>
 var resultList = queryRunner.Execute(new QuerySpecification());
 ```
-Retorna SimpleDto
 ```csharp
+// Retorna un SimpleDto
 var singleDto = queryRunner.Execute(new QuerySingleSpecification());
 ```
-Retorna PageSqlResult<SimpleDto>
 ```csharp
+// Retorna PageSqlResult<SimpleDto>
 var pagedList = queryRunner.Execute(new QueryPageSpecification(page:1, itemsPerPages: 2));
 ```
 

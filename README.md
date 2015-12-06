@@ -79,6 +79,191 @@ var queryRunner = container.Resolve<IAdoHelper>();
 
 ###Modelo de consultas###
 
+Todo el modelo de consulta parte de la interfaz ISqlQuery
+```csharp
+public interface ISqlQuery
+{
+    string Expression { get; }
+    IDictionary<string, object> Parameters { get; }
+}
+```
+
+Expression: Es el SQL que se desea ejecutar
+Parameters: Un diccionario que contiene los parámetros usados en la consulta
+
+**Creando mi primera Query**
+```csharp
+class QuerySimple : ISqlQuery
+{
+    public QuerySimple()
+    {
+        this.Expression = "select id as Id, name as Name from table_in_database";
+    }
+
+    public string Expression { get; private set; }
+
+    public IDictionary<string, object> Parameters { get; private set; }
+}
+```
+
+**Obteniendo un DataTable**
+```csharp
+var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
+var dt = queryRunner.ExecuteDataTable(new QuerySimple());
+```
+
+**Obteniendo un Datareader**
+```csharp
+var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
+var dr = adoHelper.ExecuteReader(new QuerySimple());
+```
+
+**Obteniendo la primera columna de la primera fila del resultado de la consulta**
+```csharp
+var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
+var id = queryRunner.ExecuteScalar<int>(new QuerySimple());
+```
+
+**Creando consultas con parámetros**
+```csharp
+class QueryWithParameters : ISqlQuery
+{
+    public QueryWithParameters(int id, string name)
+    {
+       this.Expression = "select id as Id, name as Name from table_in_database where id = :id and name = :name";
+
+       this.Parameters = new Dictionary<string, object>
+       {
+          {"id", id},
+          {"name", name}
+       };
+    }
+
+    public string Expression { get; private set; }
+
+    public IDictionary<string, object> Parameters { get; private set; }
+ }
+```
+
+**Onteniendo objetos desde la consulta**
+
+NET-Database query layer se apoya en una rama del proyecto Slapper.AutoMapper https://github.com/randyburden/Slapper.AutoMapper publicada en Github https://github.com/odelvalle/Slapper.AutoMapper. Esta librería permite mediante definiciones de nombres, convertir objetos dinámicos en tipos estáticos. 
+
+Las consultas que obtienen directamente objetos de transferencia de datos, implementan la interfaz ISqlSpecification que a su vez hereda de ISqlQuery
+```csharp
+public interface ISqlSpecification<out TResult> : ISqlQuery
+{
+   TResult MapResult(IQueryMappers mapper, dynamic source);
+}
+```
+
+Esta interfaz incluye un método que permite realizar el mapeo entre el resultado de la consulta y el objeto de salida
+Creando consultas que retornan un objeto
+
+**Ejemplo de DTO de salida**
+```csharp
+public class SimpleDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+```
+
+**Ejemplo de consulta que retorna una lista de DTO**
+```csharp
+public class QuerySpecification : ISqlSpecification<IEnumerable<SimpleDto>>
+{
+    public QuerySpecification()
+    {
+        this.Expression = "select...";
+    }
+
+    public IEnumerable<SimpleDto> MapResult(IQueryMappers mapper, dynamic source)
+    {
+        return mapper.MapDynamicToList<SimpleDto>(source);
+    }
+
+    public string Expression { get; private set; }
+    public IDictionary<string, object> Parameters { get; private set; }
+}
+```
+
+**Ejemplo de consulta que retorna un DTO**
+```csharp
+public class QuerySingleSpecification : ISqlSpecification<SimpleDto>
+{
+    public QuerySingleSpecification()
+    {
+        this.Expression = "select...";
+    }
+
+    public SimpleDto MapResult(IQueryMappers mapper, dynamic source)
+    {
+        return mapper.MapDynamicToSingle<SimpleDto>(source);
+    }
+
+    public string Expression { get; private set; }
+    public IDictionary<string, object> Parameters { get; private set; }
+}
+```
+
+El mapeo de consultas a objetos DTO se realiza mediante la interfaz IQueryMapper, permitiendo su adaptación a otros mappers distintos a Slapper.AutoMapper
+```csharp
+public interface IQueryMappers
+{
+    IEnumerable<TDestination> MapDynamicToList<TDestination>(List<object> source) where TDestination : class;
+    TDestination MapDynamicToSingle<TDestination>(IList<object> source) where TDestination : class;
+    TDestination MapDynamicToFirstOrDefault<TDestination>(IList<object> source) where TDestination : class;
+}
+```
+
+Esta interfaz permite 3 formas de obtener DTOs
+
+MapDynamicToList: Permite retornar una lista de DTO
+MapDynamicToSingle: Permite obtener un único DTO de salida, si la consulta retorna más de una fila o ninguna, este método retorna una excepción
+MapDynamicToFirstOrDefault: Retorna la primera fila de la consulta convertida a un DTO, en caso de no obtener respuesta, retorna NULL
+
+**Obteniendo un objeto paginado mediante la consulta**
+En el caso del paginado, las consultas implementan la interfaz ISqlPageSpecification
+```csharp
+public interface ISqlPageSpecification<out T> : ISqlSpecification<T>
+{
+   string SqlCount { get; }
+   int Page { get; }
+   int ItemsPerPage { get; }
+}
+```
+
+Esta interfaz permite incluir 2 Query a la base de datos, la que retorna el total de filas y la que retorna los datos. Las propiedades Page y ItemsPerPage son para su uso dentro del SQL que desea ejecutar. NET-Database query layer no realiza la paginación, tan solo facilita la encapsulación de la lógica.
+
+El resultado de una consulta paginada es retornada mediante un objeto PageSqlResult<T>
+```csharp
+public class PageSqlResult<T>
+{
+    public long TotalItems { get; set; }
+    public long TotalPages { get; set; }
+    public long CurrentPage { get; set; }
+
+    public T Result { get; set; }
+}
+```
+
+**Ejecutando consultas que retornan DTOs**
+
+Retorna IEnumerable<SimpleDto>
+```csharp
+var resultList = queryRunner.Execute(new QuerySpecification());
+```
+Retorna SimpleDto
+```csharp
+var singleDto = queryRunner.Execute(new QuerySingleSpecification());
+```
+Retorna PageSqlResult<SimpleDto>
+```csharp
+var pagedList = queryRunner.Execute(new QueryPageSpecification(page:1, itemsPerPages: 2));
+```
+
+Enjoy ;)
 
 ###License###
 

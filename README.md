@@ -14,8 +14,7 @@ Para más información sobre CQRS: http://martinfowler.com/bliki/CQRS.html
 
 ###¿Configurando NET-Database query layer? usando app.config o web.config ###
 
-Para Microsoft SQL Server®
-==========================
+**Para Microsoft SQL Server®**
 ```xml
 <configSections>
 	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
@@ -30,8 +29,7 @@ Para Microsoft SQL Server®
 </connectionStrings> 
 ```
 
-Para MySQL®
-===========
+**Para MySQL®**
 ```xml
 <configSections>
 	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
@@ -46,8 +44,7 @@ Para MySQL®
 </connectionStrings> 
 ```
 
-Para PostgreSQL®
-================
+**Para PostgreSQL®**
 ```xml
 <configSections>
 	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />

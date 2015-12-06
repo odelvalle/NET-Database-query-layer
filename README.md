@@ -63,7 +63,7 @@ Para más información sobre CQRS: http://martinfowler.com/bliki/CQRS.html
 NET-Database query layer cuenta con una factoría que le permite crear la instancia correcta según el tipo de base de datos a la que se desea acceder.
 
 ```csharp
-var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
+var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
 ```
 El primer parámetro usado en la factoría es el alias declarado en la configuración. El segundo parámetro es la instancia de una clase que permite mapear el resultado de consultas directamente con objetos de transferencia de datos (DTO)
 
@@ -71,14 +71,14 @@ En el caso de usar inyección de dependencia, también se debe usar esta factor�
 
 ```csharp
 var container = new UnityContainer();
-container.RegisterType<IAdoHelper>(new InjectionFactory(c => AdoHelper.CreateHelper("MsSQL", new QueryMapper())));
+container.RegisterType<IQueryRunner>(new InjectionFactory(c => QueryRunner.CreateHelper("MsSQL", new QueryMapper())));
 
-var queryRunner = container.Resolve<IAdoHelper>();
+var queryRunner = container.Resolve<IQueryRunner>();
 ```
 Un método sobre-cargado de esta factoría permite crear una instancia sin necesidad de incluir un objeto Mapper. Para estos casos solo se podrá usar NET-Database layer query para obtener resultados encapsulados en Datatable, Datareader o Scalar 
 
 ```csharp
-var queryRunner = AdoHelper.CreateHelper("MsSQL");
+var queryRunner = QueryRunner.CreateHelper("MsSQL");
 ```
 
 ###Modelo de consultas###
@@ -112,19 +112,19 @@ class QuerySimple : ISqlQuery
 
 **Obteniendo un DataTable**
 ```csharp
-var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
+var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
 var dt = queryRunner.ExecuteDataTable(new QuerySimple());
 ```
 
 **Obteniendo un Datareader**
 ```csharp
-var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
+var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
 var dr = queryRunner.ExecuteReader(new QuerySimple());
 ```
 
 **Obteniendo la primera columna de la primera fila del resultado de la consulta**
 ```csharp
-var queryRunner = AdoHelper.CreateHelper("MsSQL", new QueryMapper());
+var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
 var id = queryRunner.ExecuteScalar<int>(new QuerySimple());
 ```
 

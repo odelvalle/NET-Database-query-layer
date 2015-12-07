@@ -134,7 +134,7 @@ class QueryWithParameters : ISqlQuery
 {
     public QueryWithParameters(int id, string name)
     {
-       this.Expression = "select id as Id, name as Name from table_in_database where id = :id and name = :name";
+       this.Expression = "select id as Id, name as Name from table_in_database where id = @id and name = @name";
 
        this.Parameters = new Dictionary<string, object>
        {

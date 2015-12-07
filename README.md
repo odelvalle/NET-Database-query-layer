@@ -63,7 +63,7 @@ More info about Command-query separation http://martinfowler.com/bliki/CommandQu
 </connectionStrings> 
 ```
 
-###How create instance of NET-Database query layer?###
+###How create instance of QueryRunner?###
 NET-Database query layer cuenta con una factoría que le permite crear la instancia correcta según el tipo de base de datos a la que se desea acceder.
 
 ```csharp
@@ -79,7 +79,7 @@ container.RegisterType<IQueryRunner>(new InjectionFactory(c => QueryRunner.Creat
 
 var queryRunner = container.Resolve<IQueryRunner>();
 ```
-Un método sobre-cargado de esta factoría permite crear una instancia sin necesidad de incluir un objeto Mapper. Para estos casos solo se podrá usar NET-Database layer query para obtener resultados encapsulados en Datatable, Datareader o Scalar 
+Un método sobre-cargado de esta factoría permite crear una instancia sin necesidad de incluir un objeto Mapper. Para estos casos solo se podrá usar NET-Database query layer para obtener resultados encapsulados en Datatable, Datareader o Scalar 
 
 ```csharp
 var queryRunner = QueryRunner.CreateHelper("MsSQL");
@@ -116,19 +116,19 @@ class QuerySimple : ISqlQuery
 
 **Get DataTable**
 ```csharp
-var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
+var queryRunner = QueryRunner.CreateHelper("MsSQL");
 var dt = queryRunner.ExecuteDataTable(new QuerySimple());
 ```
 
 **Get Datareader**
 ```csharp
-var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
+var queryRunner = QueryRunner.CreateHelper("MsSQL");
 var dr = queryRunner.ExecuteReader(new QuerySimple());
 ```
 
 **Get first column of the first row from query result**
 ```csharp
-var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
+var queryRunner = QueryRunner.CreateHelper("MsSQL");
 var id = queryRunner.ExecuteScalar<int>(new QuerySimple());
 ```
 

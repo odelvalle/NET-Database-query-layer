@@ -12,6 +12,10 @@ En arquitecturas como CQRS, el modelo de persistencia (command model) va separad
 
 Para más información sobre CQRS: http://martinfowler.com/bliki/CQRS.html
 
+Otro principio en el que encaja perfectamente es el Command-query separation, el cual indica que un comando debe realizar una acción o una consulta, pero nunca ambos. NET-Database query layer cumple este principio al no permitir realizar cambios en el estado del sistema.
+
+Para más información sobre Command-query separation http://martinfowler.com/bliki/CommandQuerySeparation.html
+
 ###¿Configurando NET-Database query layer? usando app.config o web.config ###
 
 **Para Microsoft SQL Server®**

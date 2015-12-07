@@ -1,24 +1,24 @@
 # NET-Database query layer
 A thin database layer to make more easy queries (.NET C#)
 
-###¿Qué es?###
+###what is it?###
 NET-Database query layer permite de manera fácil y rápida, realizar consultas a bases de datos Microsoft SQL Server® MySQL® o PostgreSQL®, aunque puede ser extendida fácilmente a cualquier base de datos que implemente un controlador para ADO.NET
 
-###¿Es un ORM?###
+###Is this an ORM?###
 No, NET-Dabase query layer como su nombre indica, solo permite realizar consultas a base de datos y no incluye ningún mecanismo de persistencia.
 
-###¿Por qué usar NET-Database query layer si ya tengo EntityFramework® o NHibernate®?###
+###Why use NET-Database query layer if I use EntityFramework®, NHibernate® or ADO.NET?###
 En arquitecturas como CQRS, el modelo de persistencia (command model) va separado del modelo de consulta (query model). En este modelo de consulta es donde encaja perfectamente NET-Database query layer, permitiendo mantener las consultas a datos en un proceso diferente o incluso, ejecutándose en un hardware diferente. 
 
-Para más información sobre CQRS: http://martinfowler.com/bliki/CQRS.html
+More info about CQRS: http://martinfowler.com/bliki/CQRS.html
 
 Otro principio en el que encaja perfectamente es el Command-query separation, el cual indica que un comando debe realizar una acción o una consulta, pero nunca ambos. NET-Database query layer cumple este principio al no permitir realizar cambios en el estado del sistema.
 
-Para más información sobre Command-query separation http://martinfowler.com/bliki/CommandQuerySeparation.html
+More info about Command-query separation http://martinfowler.com/bliki/CommandQuerySeparation.html
 
-###¿Configurando NET-Database query layer? usando app.config o web.config ###
+###Configure NET-Database query layer. Ppp.config or Web.config ###
 
-**Para Microsoft SQL Server®**
+**Microsoft SQL Server®**
 ```xml
 <configSections>
 	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
@@ -33,7 +33,7 @@ Para más información sobre Command-query separation http://martinfowler.com/bl
 </connectionStrings> 
 ```
 
-**Para MySQL®**
+**MySQL®**
 ```xml
 <configSections>
 	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
@@ -48,7 +48,7 @@ Para más información sobre Command-query separation http://martinfowler.com/bl
 </connectionStrings> 
 ```
 
-**Para PostgreSQL®**
+**PostgreSQL®**
 ```xml
 <configSections>
 	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
@@ -63,7 +63,7 @@ Para más información sobre Command-query separation http://martinfowler.com/bl
 </connectionStrings> 
 ```
 
-###¿Cómo instanciar NET-Database query layer?###
+###How create instance of NET-Database query layer?###
 NET-Database query layer cuenta con una factoría que le permite crear la instancia correcta según el tipo de base de datos a la que se desea acceder.
 
 ```csharp
@@ -85,7 +85,7 @@ Un método sobre-cargado de esta factoría permite crear una instancia sin neces
 var queryRunner = QueryRunner.CreateHelper("MsSQL");
 ```
 
-###Modelo de consultas###
+###Query Model###
 
 Todo el modelo de consulta parte de la interfaz ISqlQuery
 ```csharp
@@ -99,7 +99,7 @@ public interface ISqlQuery
 - *Expression*: Es el SQL que se desea ejecutar
 - *Parameters*: Un diccionario que contiene los parámetros usados en la consulta
 
-**Creando mi primera Query**
+**My first Query using NET-Database query layer**
 ```csharp
 class QuerySimple : ISqlQuery
 {
@@ -114,25 +114,25 @@ class QuerySimple : ISqlQuery
 }
 ```
 
-**Obteniendo un DataTable**
+**Get DataTable**
 ```csharp
 var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
 var dt = queryRunner.ExecuteDataTable(new QuerySimple());
 ```
 
-**Obteniendo un Datareader**
+**Get Datareader**
 ```csharp
 var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
 var dr = queryRunner.ExecuteReader(new QuerySimple());
 ```
 
-**Obteniendo la primera columna de la primera fila del resultado de la consulta**
+**Get first column of the first row from query result**
 ```csharp
 var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
 var id = queryRunner.ExecuteScalar<int>(new QuerySimple());
 ```
 
-**Creando consultas con parámetros**
+**Query model with parameters**
 ```csharp
 class QueryWithParameters : ISqlQuery
 {
@@ -153,7 +153,7 @@ class QueryWithParameters : ISqlQuery
  }
 ```
 
-**Obteniendo objetos desde la consulta**
+**Get DTO from query result**
 
 NET-Database query layer se apoya en una rama del proyecto Slapper.AutoMapper https://github.com/randyburden/Slapper.AutoMapper publicada en Github https://github.com/odelvalle/Slapper.AutoMapper. Esta librería permite mediante definiciones de nombres, convertir objetos dinámicos en tipos estáticos. 
 
@@ -166,7 +166,7 @@ public interface ISqlSpecification<out TResult> : ISqlQuery
 ```
 Esta interfaz incluye un método que permite realizar el mapeo entre el resultado de la consulta y el objeto de salida
 
-**Creando consultas que retornan un objeto**
+**Transform Query result to DTO**
 
 **Ejemplo de DTO de salida**
 ```csharp
@@ -177,7 +177,7 @@ public class SimpleDto
 }
 ```
 
-**Ejemplo de consulta que retorna una lista de DTO**
+**Return IEnumerable<DTO>**
 ```csharp
 public class QuerySpecification : ISqlSpecification<IEnumerable<SimpleDto>>
 {
@@ -196,7 +196,7 @@ public class QuerySpecification : ISqlSpecification<IEnumerable<SimpleDto>>
 }
 ```
 
-**Ejemplo de consulta que retorna un DTO**
+**Return simple DTO**
 ```csharp
 public class QuerySingleSpecification : ISqlSpecification<SimpleDto>
 {
@@ -229,7 +229,7 @@ Esta interfaz permite 3 formas de obtener DTOs
 - *MapDynamicToSingle*: Permite obtener un único DTO de salida, si la consulta retorna más de una fila o ninguna, este método lanza un error
 - *MapDynamicToFirstOrDefault*: Retorna la primera fila de la consulta convertida a un DTO, en caso de no obtener respuesta, retorna NULL
 
-**Obteniendo un objeto paginado mediante la consulta**
+**Paged result**
 
 En el caso del paginado, las consultas implementan la interfaz ISqlPageSpecification
 ```csharp
@@ -254,21 +254,21 @@ public class PageSqlResult<T>
 }
 ```
 
-**Ejecutando consultas que retornan DTOs**
+**Execute Query**
 
 ```csharp
-// Retorna un IEnumerable<SimpleDto>
+// Return IEnumerable<SimpleDto>
 var resultList = queryRunner.Execute(new QuerySpecification());
 ```
 ```csharp
-// Retorna un SimpleDto
+// Return SimpleDto
 var singleDto = queryRunner.Execute(new QuerySingleSpecification());
 ```
 ```csharp
-// Retorna PageSqlResult<SimpleDto>
+// Return PageSqlResult<SimpleDto>
 var pagedList = queryRunner.Execute(new QueryPageSpecification(page:1, itemsPerPages: 2));
 ```
-###Soporte para ejecutar procedimientos almacenados###
+###Store procedure support###
 
 De momento no se soporta la ejecución de procedimientos almacenados
 

@@ -1,7 +1,7 @@
 # NET-Database query layer
 A thin database layer to make more easy queries (.NET C#)
 
-###what is it?###
+###What is it?###
 NET-Database query layer permite de manera fácil y rápida, realizar consultas a bases de datos Microsoft SQL Server® MySQL® o PostgreSQL®, aunque puede ser extendida fácilmente a cualquier base de datos que implemente un controlador para ADO.NET
 
 ###Is this an ORM?###
@@ -16,7 +16,7 @@ Otro principio en el que encaja perfectamente es el Command-query separation, el
 
 More info about Command-query separation http://martinfowler.com/bliki/CommandQuerySeparation.html
 
-###Configure NET-Database query layer. Ppp.config or Web.config ###
+###Configure NET-Database query layer. App.config or Web.config ###
 
 **Microsoft SQL Server®**
 ```xml

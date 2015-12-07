@@ -7,7 +7,7 @@ NET-Database query layer permite de manera fácil y rápida, realizar consultas 
 ###Is this an ORM?###
 No, NET-Dabase query layer como su nombre indica, solo permite realizar consultas a base de datos y no incluye ningún mecanismo de persistencia.
 
-###Why use NET-Database query layer if I use EntityFramework®, NHibernate® or ADO.NET?###
+###Why use NET-Database query layer if I am using EntityFramework®, NHibernate® or ADO.NET?###
 En arquitecturas como CQRS, el modelo de persistencia (command model) va separado del modelo de consulta (query model). En este modelo de consulta es donde encaja perfectamente NET-Database query layer, permitiendo mantener las consultas a datos en un proceso diferente o incluso, ejecutándose en un hardware diferente. 
 
 More info about CQRS: http://martinfowler.com/bliki/CQRS.html

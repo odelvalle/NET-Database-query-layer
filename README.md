@@ -2,10 +2,10 @@
 A thin database layer to make more easy queries (.NET C#)
 
 ###What is it?###
-NET-Database query layer permite de manera fácil y rápida, realizar consultas a bases de datos Microsoft SQL Server® MySQL® o PostgreSQL®, aunque puede ser extendida fácilmente a cualquier base de datos que implemente un controlador para ADO.NET
+NET-Database query layer components will be a useful addition to any application or website to create SQL queries to your database in a OO way. It supports the majority of different database types such as SQL Server® MySQL® o PostgreSQL®, but is easy extend to any ADO.NET provider.
 
 ###Is this an ORM?###
-No, NET-Dabase query layer como su nombre indica, solo permite realizar consultas a base de datos y no incluye ningún mecanismo de persistencia.
+No, NET-Dabase query layer only allow query to database and not include any persistence model.
 
 ###Why use NET-Database query layer if I am using EntityFramework®, NHibernate® or ADO.NET?###
 En arquitecturas como CQRS, el modelo de persistencia (command model) va separado del modelo de consulta (query model). En este modelo de consulta es donde encaja perfectamente NET-Database query layer, permitiendo mantener las consultas a datos en un proceso diferente o incluso, ejecutándose en un hardware diferente. 
@@ -64,14 +64,14 @@ More info about Command-query separation http://martinfowler.com/bliki/CommandQu
 ```
 
 ###How create instance of QueryRunner?###
-NET-Database query layer cuenta con una factoría que le permite crear la instancia correcta según el tipo de base de datos a la que se desea acceder.
+NET-Database query layer implement factory pattern to determinate which type of class to create. 
 
 ```csharp
 var queryRunner = QueryRunner.CreateHelper("MsSQL", new QueryMapper());
 ```
-El primer parámetro usado en la factoría es el alias declarado en la configuración. El segundo parámetro es la instancia de una clase que permite mapear el resultado de consultas directamente con objetos de transferencia de datos (DTO)
+The first paramaeter allow to specificate the alias used in the configuration: this parameter identify the instance to create. The second parameter allow to pass the query mapper object used to convert query resulto to DTO.
 
-En el caso de usar inyección de dependencia, también se debe usar esta factoría (Ejemplo con Unity)
+Using dependency injection (Unity)
 
 ```csharp
 var container = new UnityContainer();

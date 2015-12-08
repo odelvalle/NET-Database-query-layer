@@ -12,7 +12,7 @@ In CQRS architectures, the persistence model (command model) is separated to que
 
 More info about CQRS: http://martinfowler.com/bliki/CQRS.html
 
-Command-query separation principle: every method should either be a command that performs an action, or a query that returns data to the caller, but not both. .
+Other application is in Command-query separation principle: every method should either be a command that performs an action, or a query that returns data to the caller, but not both. .
 
 More info about Command-query separation http://martinfowler.com/bliki/CommandQuerySeparation.html
 

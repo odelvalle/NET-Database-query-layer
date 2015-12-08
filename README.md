@@ -8,11 +8,11 @@ NET-Database query layer components will be a useful addition to any application
 No, NET-Dabase query layer only allow query to database and not include any persistence model.
 
 ###Why use NET-Database query layer if I am using EntityFramework®, NHibernate® or ADO.NET?###
-En arquitecturas como CQRS, el modelo de persistencia (command model) va separado del modelo de consulta (query model). En este modelo de consulta es donde encaja perfectamente NET-Database query layer, permitiendo mantener las consultas a datos en un proceso diferente o incluso, ejecutándose en un hardware diferente. 
+In CQRS architectures, the persistence model (command model) is separated to query model. NET- Database query layer is perfect to implement the query model, allowing it to maintain in a different process or running on different hardware.
 
 More info about CQRS: http://martinfowler.com/bliki/CQRS.html
 
-Otro principio en el que encaja perfectamente es el Command-query separation, el cual indica que un comando debe realizar una acción o una consulta, pero nunca ambos. NET-Database query layer cumple este principio al no permitir realizar cambios en el estado del sistema.
+Command-query separation principle: every method should either be a command that performs an action, or a query that returns data to the caller, but not both. .
 
 More info about Command-query separation http://martinfowler.com/bliki/CommandQuerySeparation.html
 

@@ -234,7 +234,7 @@ public class PageSqlResult<T>
 
 ###Store procedure support###
 
-De momento no se soporta la ejecución de procedimientos almacenados
+Store procedure is not supported at this moment.
 
 Enjoy ;)
 

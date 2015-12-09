@@ -63,10 +63,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mapper\QueryMapper.cs" />
     <Compile Include="Mapper\IQueryMappers.cs" />
-    <Compile Include="SqlQuery\ISqlPageSpecification.cs" />
+    <Compile Include="SqlQuery\ISqlPagedQuery.cs" />
     <Compile Include="SqlQuery\ISqlQuery.cs" />
-    <Compile Include="SqlQuery\ISqlSpecification.cs" />
     <Compile Include="SqlQuery\PageSqlResult.cs" />
+    <Compile Include="SqlQuery\QueryMapperResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

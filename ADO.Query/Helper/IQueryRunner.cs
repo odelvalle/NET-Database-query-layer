@@ -7,8 +7,8 @@ namespace ADO.Query.Helper
     {
         IDbConnection GetConnection();
 
-        TResult Execute<TResult>(ISqlSpecification<TResult> criterial);
-        PageSqlResult<TResult> Execute<TResult>(ISqlPageSpecification<TResult> criterial);
+        QueryMapperResult<TResult> Execute<TResult>(ISqlQuery criterial) where TResult : class;
+        PageSqlResult<TResult> Execute<TResult>(ISqlPagedQuery criterial) where TResult : class;
 
         DataTable ExecuteDataTable(ISqlQuery criterial);
         IDataReader ExecuteReader(ISqlQuery criterial);

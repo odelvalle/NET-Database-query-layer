@@ -7,7 +7,7 @@ namespace ADO.Query.Test.Query
     using ADO.Query.SqlQuery;
     using ADO.Query.Test.Query.Dto;
 
-    public class QueryPageSpecification : ISqlPageSpecification<IEnumerable<SimpleDto>>
+    public class QueryPageSpecification : ISqlPagedQuery
     {
         public QueryPageSpecification(int page, int itemsPerPages)
         {
@@ -16,11 +16,6 @@ namespace ADO.Query.Test.Query
 
             this.ItemsPerPage = itemsPerPages;
             this.Page = page;
-        }
-
-        public IEnumerable<SimpleDto> MapResult(IQueryMappers mapper, dynamic source)
-        {
-            return mapper.MapDynamicToList<SimpleDto>(source);
         }
 
         public string Expression { get; private set; }

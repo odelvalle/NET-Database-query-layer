@@ -151,13 +151,13 @@ namespace ADO.Query.Helper
 
         #region - ExecuteQueryMapper -
 
-        public TResult Execute<TResult>(ISqlSpecification<TResult> criterial)
+        public QueryMapperResult<TResult> Execute<TResult>(ISqlQuery criterial) where TResult : class
         {
             var dr = this.ExecuteReader(CommandType.Text, criterial.Expression, this.GetCriterialParameters(criterial.Parameters));
-            return criterial.MapResult(this.mapper, dr. ToDynamic());
+            return new QueryMapperResult<TResult>(this.mapper, dr.ToDynamic());
         }
 
-        public PageSqlResult<TResult> Execute<TResult>(ISqlPageSpecification<TResult> criterial)
+        public PageSqlResult<TResult> Execute<TResult>(ISqlPagedQuery criterial) where TResult : class
         {
             var dataParameters = this.GetCriterialParameters(criterial.Parameters);
 
@@ -165,7 +165,7 @@ namespace ADO.Query.Helper
             var totalPages = total % criterial.ItemsPerPage == 0 ? total / criterial.ItemsPerPage : (total / criterial.ItemsPerPage) + 1;
 
             var d = this.ExecuteReader(CommandType.Text, criterial.Expression, dataParameters);
-            var result = criterial.MapResult(this.mapper, d.ToDynamic());
+            var result = this.mapper.MapDynamicToList<TResult>((List<object>)d.ToDynamic());
 
             return new PageSqlResult<TResult>
             {

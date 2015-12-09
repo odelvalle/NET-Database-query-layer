@@ -6,6 +6,7 @@ namespace ADO.Query.Test
     using System.Linq;
 
     using ADO.Query.Mapper;
+    using ADO.Query.Test.Query.Dto;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -109,7 +110,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var result = queryRunner.Execute(new QuerySpecification());
+            var result = queryRunner.Execute<SimpleDto>(new QuerySimple()).ToList();
            
             Assert.IsNotNull(result);
             // ReSharper disable PossibleMultipleEnumeration
@@ -143,7 +144,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            queryRunner.Execute(new QuerySingleSpecification());
+            queryRunner.Execute<SimpleDto>(new QuerySimple()).ToSingle();
         }
 
         [TestMethod]
@@ -161,7 +162,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var singleDto = queryRunner.Execute(new QuerySingleSpecification());
+            var singleDto = queryRunner.Execute<SimpleDto>(new QuerySimple()).ToSingle();
 
             Assert.IsNotNull(singleDto);
             Assert.AreEqual(1, singleDto.Id);
@@ -176,7 +177,7 @@ namespace ADO.Query.Test
                 ReturnValues = new List<IDictionary<string, object>>()
             };
 
-            var singleDto = queryRunner.Execute(new QueryFirstOrDefaultSpecification());
+            var singleDto = queryRunner.Execute<SimpleDto>(new QuerySimple()).ToFirstOrDefault();
             Assert.IsNull(singleDto);
         }
 
@@ -200,7 +201,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var singleDto = queryRunner.Execute(new QueryFirstOrDefaultSpecification());
+            var singleDto = queryRunner.Execute<SimpleDto>(new QuerySimple()).ToFirstOrDefault();
 
             Assert.IsNotNull(singleDto);
             Assert.AreEqual(1, singleDto.Id);
@@ -227,7 +228,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            var pagedList = queryRunner.Execute(new QueryPageSpecification(page: 1, itemsPerPages: 2));
+            var pagedList = queryRunner.Execute<SimpleDto>(new QueryPageSpecification(page: 1, itemsPerPages: 2));
 
             Assert.IsNotNull(pagedList);
             Assert.AreEqual(2, pagedList.Result.Count());
@@ -256,7 +257,7 @@ namespace ADO.Query.Test
                 }
             };
 
-            queryRunner.Execute(new QueryPageSpecification(page: 1, itemsPerPages: 2));
+            queryRunner.Execute<SimpleDto>(new QueryPageSpecification(page: 1, itemsPerPages: 2));
         }
     }
 }

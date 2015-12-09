@@ -1,6 +1,6 @@
 ﻿namespace ADO.Query.SqlQuery
 {
-    public interface ISqlPageSpecification<out T> : ISqlSpecification<T>
+    public interface ISqlPagedQuery : ISqlQuery
     {
         string SqlCount { get; }
         int Page { get; }

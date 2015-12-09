@@ -79,7 +79,7 @@ container.RegisterType<IQueryRunner>(new InjectionFactory(c => QueryRunner.Creat
 
 var queryRunner = container.Resolve<IQueryRunner>();
 ```
-Un método sobre-cargado de esta factoría permite crear una instancia sin necesidad de incluir un objeto Mapper. Para estos casos solo se podrá usar NET-Database query layer para obtener resultados encapsulados en Datatable, Datareader o Scalar 
+A override factory method can be used without query mapper object parameter, but in this case your query will be used only to return Datatable, datareader or scalar result.
 
 ```csharp
 var queryRunner = QueryRunner.CreateHelper("MsSQL");
@@ -87,7 +87,7 @@ var queryRunner = QueryRunner.CreateHelper("MsSQL");
 
 ###Query Model###
 
-Todo el modelo de consulta parte de la interfaz ISqlQuery
+All query model implement ISqlQuery Interface
 ```csharp
 public interface ISqlQuery
 {
@@ -96,8 +96,8 @@ public interface ISqlQuery
 }
 ```
 
-- *Expression*: Es el SQL que se desea ejecutar
-- *Parameters*: Un diccionario que contiene los parámetros usados en la consulta
+- *Expression*: SQL string to execute in database
+- *Parameters*: Name and value collection with parameters included in SQL string
 
 **My first Query using NET-Database query layer**
 ```csharp
@@ -126,7 +126,7 @@ var queryRunner = QueryRunner.CreateHelper("MsSQL");
 var dr = queryRunner.ExecuteReader(new QuerySimple());
 ```
 
-**Get first column of the first row from query result**
+**Get the first column of the first row in the query result**
 ```csharp
 var queryRunner = QueryRunner.CreateHelper("MsSQL");
 var id = queryRunner.ExecuteScalar<int>(new QuerySimple());
@@ -155,20 +155,20 @@ class QueryWithParameters : ISqlQuery
 
 **Get DTO from query result**
 
-NET-Database query layer se apoya en una rama del proyecto Slapper.AutoMapper https://github.com/randyburden/Slapper.AutoMapper publicada en Github https://github.com/odelvalle/Slapper.AutoMapper. Esta librería permite mediante definiciones de nombres, convertir objetos dinámicos en tipos estáticos. 
+NET-Database query layer use my brach of Slapper.AutoMapper https://github.com/odelvalle/Slapper.AutoMapper on Github. This library can convert dynamic data into static types and populate complex nested child objects. 
 
-Las consultas que obtienen directamente objetos de transferencia de datos, implementan la interfaz ISqlSpecification que a su vez hereda de ISqlQuery
+To map the query result directly to DTO, your query model must implement ISqlSpecification. This interface inherit from ISqlQuery interface
 ```csharp
 public interface ISqlSpecification<out TResult> : ISqlQuery
 {
    TResult MapResult(IQueryMappers mapper, dynamic source);
 }
 ```
-Esta interfaz incluye un método que permite realizar el mapeo entre el resultado de la consulta y el objeto de salida
+MapResult: Inherit objet implement this method to map query result to DTO
 
 **Transform Query result to DTO**
 
-**Ejemplo de DTO de salida**
+**Example**
 ```csharp
 public class SimpleDto
 {
@@ -177,7 +177,7 @@ public class SimpleDto
 }
 ```
 
-**Return IEnumerable<DTO>**
+**Return IEnumerable\<DTO\>**
 ```csharp
 public class QuerySpecification : ISqlSpecification<IEnumerable<SimpleDto>>
 {
@@ -225,8 +225,8 @@ public interface IQueryMappers
 ```
 Esta interfaz permite 3 formas de obtener DTOs
 
-- *MapDynamicToList*: Permite retornar una lista de DTO
-- *MapDynamicToSingle*: Permite obtener un único DTO de salida, si la consulta retorna más de una fila o ninguna, este método lanza un error
+- *MapDynamicToList*: return IEnumerable
+- *MapDynamicToSingle*: return DTO object. if query return more than 1 result or empty result, exception is throw
 - *MapDynamicToFirstOrDefault*: Retorna la primera fila de la consulta convertida a un DTO, en caso de no obtener respuesta, retorna NULL
 
 **Paged result**

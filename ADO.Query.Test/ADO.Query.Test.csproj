@@ -80,11 +80,13 @@
     <Compile Include="AdoMocks\MockQueryRunner.cs" />
     <Compile Include="AdoMocks\MockDataReader.cs" />
     <Compile Include="AdoMocks\MockParameters.cs" />
+    <Compile Include="QueryIntegrationTest.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\Dto\SimpleDto.cs" />
     <Compile Include="Query\QuerySimple.cs" />
     <Compile Include="Query\QueryPageSpecification.cs" />
+    <Compile Include="Query\QueryUsers.cs" />
     <Compile Include="Query\QueryWithParameters.cs" />
     <Compile Include="ParametersTest.cs" />
     <Compile Include="FactoryTest.cs" />
@@ -99,7 +101,11 @@
       <Name>ADO.Query</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Database\Database1.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

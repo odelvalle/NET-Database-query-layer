@@ -83,7 +83,9 @@
     <Compile Include="QueryIntegrationTest.cs" />
     <Compile Include="QueryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\Dto\PhoneDto.cs" />
     <Compile Include="Query\Dto\SimpleDto.cs" />
+    <Compile Include="Query\QueryOneToMany.cs" />
     <Compile Include="Query\QuerySimple.cs" />
     <Compile Include="Query\QueryPageSpecification.cs" />
     <Compile Include="Query\QueryUsers.cs" />
@@ -92,7 +94,9 @@
     <Compile Include="FactoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -102,8 +106,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database\Database1.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="Database\QueryTest.mdf" />
+    <Content Include="Database\QueryTest_log.ldf">
+      <DependentUpon>QueryTest.mdf</DependentUpon>
     </Content>
   </ItemGroup>
   <Choose>

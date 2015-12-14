@@ -79,7 +79,7 @@ container.RegisterType<IQueryRunner>(new InjectionFactory(c => QueryRunner.Creat
 
 var queryRunner = container.Resolve<IQueryRunner>();
 ```
-A override factory method can be used without query mapper object parameter, but in this case your query will be used only to return Datatable, datareader or scalar result.
+An override method of factory can be used without query mapper object parameter, but in this case your query will be used only to return Datatable, datareader or scalar result.
 
 ```csharp
 var queryRunner = QueryRunner.CreateHelper("MsSQL");
@@ -155,16 +155,7 @@ class QueryWithParameters : ISqlQuery
 
 **Get DTO from query result**
 
-NET-Database query layer use my brach of Slapper.AutoMapper https://github.com/odelvalle/Slapper.AutoMapper on Github. This library can convert dynamic data into static types and populate complex nested child objects. 
-
-To map the query result directly to DTO, your query model must implement ISqlSpecification. This interface inherit from ISqlQuery interface
-```csharp
-public interface ISqlSpecification<out TResult> : ISqlQuery
-{
-   TResult MapResult(IQueryMappers mapper, dynamic source);
-}
-```
-MapResult: Inherit objet implement this method to map query result to DTO
+NET-Database query layer use my branch of Slapper.AutoMapper https://github.com/odelvalle/Slapper.AutoMapper on Github. This library can convert dynamic data into static types and populate complex nested child objects. 
 
 **Transform Query result to DTO**
 
@@ -179,70 +170,57 @@ public class SimpleDto
 
 **Return IEnumerable\<DTO\>**
 ```csharp
-public class QuerySpecification : ISqlSpecification<IEnumerable<SimpleDto>>
-{
-    public QuerySpecification()
-    {
-        this.Expression = "select...";
-    }
-
-    public IEnumerable<SimpleDto> MapResult(IQueryMappers mapper, dynamic source)
-    {
-        return mapper.MapDynamicToList<SimpleDto>(source);
-    }
-
-    public string Expression { get; private set; }
-    public IDictionary<string, object> Parameters { get; private set; }
-}
+var result = queryRunner.Execute<SimpleDto>(new QuerySimple()).ToList();
 ```
 
-**Return simple DTO**
+**Return Single DTO**
 ```csharp
-public class QuerySingleSpecification : ISqlSpecification<SimpleDto>
-{
-    public QuerySingleSpecification()
-    {
-        this.Expression = "select...";
-    }
-
-    public SimpleDto MapResult(IQueryMappers mapper, dynamic source)
-    {
-        return mapper.MapDynamicToSingle<SimpleDto>(source);
-    }
-
-    public string Expression { get; private set; }
-    public IDictionary<string, object> Parameters { get; private set; }
-}
+var singleDto = queryRunner.Execute<SimpleDto>(new QuerySimple()).ToSingle();
 ```
-El mapeo de consultas a objetos DTO se realiza mediante la interfaz IQueryMapper, permitiendo su adaptación a otros mappers distintos a Slapper.AutoMapper
+
+**Return First or default**
 ```csharp
-public interface IQueryMappers
-{
-    IEnumerable<TDestination> MapDynamicToList<TDestination>(List<object> source) where TDestination : class;
-    TDestination MapDynamicToSingle<TDestination>(IList<object> source) where TDestination : class;
-    TDestination MapDynamicToFirstOrDefault<TDestination>(IList<object> source) where TDestination : class;
-}
+var singleDto = queryRunner.Execute<SimpleDto>(new QuerySimple()).ToFirstOrDefault();
 ```
-Esta interfaz permite 3 formas de obtener DTOs
-
-- *MapDynamicToList*: return IEnumerable
-- *MapDynamicToSingle*: return DTO object. if query return more than 1 result or empty result, exception is throw
-- *MapDynamicToFirstOrDefault*: Retorna la primera fila de la consulta convertida a un DTO, en caso de no obtener respuesta, retorna NULL
 
 **Paged result**
 
-En el caso del paginado, las consultas implementan la interfaz ISqlPageSpecification
+To paged result, must implement the interface ISqlPagedQuery
 ```csharp
-public interface ISqlPageSpecification<out T> : ISqlSpecification<T>
+public interface ISqlPagedQuery : ISqlQuery
 {
    string SqlCount { get; }
    int Page { get; }
    int ItemsPerPage { get; }
 }
 ```
-Esta interfaz permite incluir 2 Query a la base de datos, la que retorna el total de filas y la que retorna los datos. Las propiedades Page y ItemsPerPage son para su uso dentro del SQL que desea ejecutar. NET-Database query layer no realiza la paginación, tan solo facilita la encapsulación de la lógica.
+A sample pagination SQL query
+```csharp
+public class QueryPageSpecification : ISqlPagedQuery
+{
+    public QueryPageSpecification(int page, int itemsPerPages)
+    {
+        this.Expression = "select...";
+        this.SqlCount = "select count(*)...";
 
-El resultado de una consulta paginada es retornada mediante un objeto PageSqlResult<T>
+        this.ItemsPerPage = itemsPerPages;
+        this.Page = page;
+    }
+
+    public string Expression { get; private set; }
+    public IDictionary<string, object> Parameters { get; private set; }
+
+    public string SqlCount { get; private set; }
+
+    public int Page { get; private set; }
+    public int ItemsPerPage { get; private set; }
+}
+```
+Execute paged query
+```csharp
+var pagedList = queryRunner.Execute<SimpleDto>(new QueryPageSpecification(page: 1, itemsPerPages: 2));
+```
+and will return a PageSqlResult<T>
 ```csharp
 public class PageSqlResult<T>
 {
@@ -250,27 +228,13 @@ public class PageSqlResult<T>
     public long TotalPages { get; set; }
     public long CurrentPage { get; set; }
 
-    public T Result { get; set; }
+    public IEnumerable<T> Result { get; set; }
 }
 ```
 
-**Execute Query**
-
-```csharp
-// Return IEnumerable<SimpleDto>
-var resultList = queryRunner.Execute(new QuerySpecification());
-```
-```csharp
-// Return SimpleDto
-var singleDto = queryRunner.Execute(new QuerySingleSpecification());
-```
-```csharp
-// Return PageSqlResult<SimpleDto>
-var pagedList = queryRunner.Execute(new QueryPageSpecification(page:1, itemsPerPages: 2));
-```
 ###Store procedure support###
 
-De momento no se soporta la ejecución de procedimientos almacenados
+Store procedure is not supported at this moment.
 
 Enjoy ;)
 

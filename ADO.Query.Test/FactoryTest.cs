@@ -13,7 +13,7 @@ namespace ADO.Query.Test
         [TestMethod]
         public void TestCreateHelper()
         {
-            var mockAdo = QueryRunner.CreateHelper("MockAdoHelper", null);
+            var mockAdo = QueryRunner.CreateHelper("MockAdoHelper");
             Assert.IsInstanceOfType(mockAdo, typeof(MockQueryRunner));
         }
 
@@ -21,7 +21,7 @@ namespace ADO.Query.Test
         public void TestDependencyInjectionCreateHelper()
         {
             var container = new UnityContainer();
-            container.RegisterType<IQueryRunner>(new InjectionFactory(c => QueryRunner.CreateHelper("MockAdoHelper", null)));
+            container.RegisterType<IQueryRunner>(new InjectionFactory(c => QueryRunner.CreateHelper("MockAdoHelper")));
 
             var mockAdo = container.Resolve<IQueryRunner>();
             Assert.IsInstanceOfType(mockAdo, typeof(MockQueryRunner));

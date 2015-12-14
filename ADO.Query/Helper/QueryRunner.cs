@@ -14,12 +14,6 @@ namespace ADO.Query.Helper
 
     public abstract class QueryRunner : IQueryRunner
     {
-        private enum AdoConnectionOwnership	
-        {
-            Internal, 
-            External
-        }
-
         #region Declare members
 
         private readonly IQueryMappers mapper;
@@ -191,8 +185,6 @@ namespace ADO.Query.Helper
             // Create & open a IDbConnection, and dispose of it after we are done
             using (var connection = this.GetConnection())
             {
-                connection.Open();
-
                 // Call the overload that takes a connection in place of the connection string
                 return this.ExecuteDataTable(connection, commandType, commandText, commandParameters);
             }
@@ -201,16 +193,16 @@ namespace ADO.Query.Helper
         private DataTable ExecuteDataTable(IDbConnection connection, CommandType commandType, string commandText, params IDataParameter[] commandParameters)
         {
             if (connection == null) throw new ArgumentNullException("connection");
-
-            // Create a command and prepare it for execution
-            var cmd = connection.CreateCommand();
-            bool mustCloseConnection;
-            this.PrepareCommand(cmd, connection, null, commandType, commandText, commandParameters, out mustCloseConnection);
+            var mustCloseConnection = false;
 
             // Create the DataAdapter & DataSet
             IDbDataAdapter da = null;
             try
             {
+                // Create a command and prepare it for execution
+                var cmd = connection.CreateCommand();
+                this.PrepareCommand(cmd, connection, null, commandType, commandText, commandParameters, out mustCloseConnection);
+
                 da = this.GetDataAdapter();
                 da.SelectCommand = cmd;
 
@@ -220,13 +212,13 @@ namespace ADO.Query.Helper
                 // Detach the IDataParameters from the command object, so they can be used again
                 cmd.Parameters.Clear();
 
-                if (mustCloseConnection) connection.Close();
-
                 // Return the dataset
                 return dt;
             }
             finally
             {
+                if (mustCloseConnection && connection.State != ConnectionState.Closed) connection.Close();
+
                 if (da != null)
                 {
                     var id = da as IDisposable;
@@ -247,48 +239,25 @@ namespace ADO.Query.Helper
 
         private IDataReader ExecuteReader(CommandType commandType, string commandText, params IDataParameter[] commandParameters)
         {
-            IDbConnection connection = null;
-            try
-            {
-                connection = this.GetConnection();
-                connection.Open();
-
-                // Call the private overload that takes an internally owned connection in place of the connection string
-                return this.ExecuteReader(connection, null, commandType, commandText, commandParameters, AdoConnectionOwnership.Internal);
-            }
-            catch
-            {
-                // If we fail to return the IDataReader, we need to close the connection ourselves
-                if( connection != null ) connection.Close();
-                throw;
-            }
-            
+            return this.ExecuteReader(this.GetConnection(), null, commandType, commandText, commandParameters);
         }
 
-        private IDataReader ExecuteReader(IDbConnection connection, IDbTransaction transaction, CommandType commandType, string commandText, IDataParameter[] commandParameters, AdoConnectionOwnership connectionOwnership)
+        private IDataReader ExecuteReader(IDbConnection connection, IDbTransaction transaction, CommandType commandType, string commandText, IDataParameter[] commandParameters)
         {
             if (connection == null) throw new ArgumentNullException("connection");
-
             var mustCloseConnection = false;
+
             // Create a command and prepare it for execution
             var cmd = connection.CreateCommand();
-            try
-            {
-                this.PrepareCommand(cmd, connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
+            this.PrepareCommand(cmd, connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
 
-                // Create a reader
+            // Create a reader
 
-                // Call ExecuteReader with the appropriate CommandBehavior
-                var dataReader = connectionOwnership == AdoConnectionOwnership.External ? cmd.ExecuteReader() : cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            // Call ExecuteReader with the appropriate CommandBehavior
+            var dataReader = mustCloseConnection ? cmd.ExecuteReader() : cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-                this.ClearCommand(cmd);
-                return dataReader;
-            }
-            catch
-            {
-                if (mustCloseConnection) connection.Close();
-                throw;
-            }
+            this.ClearCommand(cmd);
+            return dataReader;
         }
 
         #endregion ExecuteReader
@@ -303,41 +272,36 @@ namespace ADO.Query.Helper
 
         private T ExecuteScalar<T>(CommandType commandType, string commandText, params IDataParameter[] commandParameters)
         {
-            // Create & open a IDbConnection, and dispose of it after we are done
-            IDbConnection connection = null;
-            try
+            using (var connection = this.GetConnection())
             {
-                connection = this.GetConnection();
-                connection.Open();
-
-                // Call the overload that takes a connection in place of the connection string
                 return this.ExecuteScalar<T>(connection, commandType, commandText, commandParameters);
-            }
-            finally
-            {
-                IDisposable id = connection;
-                if( id != null ) id.Dispose();
             }
         }
 
         private T ExecuteScalar<T>(IDbConnection connection, CommandType commandType, string commandText, params IDataParameter[] commandParameters)
         {
-            if( connection == null ) throw new ArgumentNullException( "connection" );
+            if (connection == null) throw new ArgumentNullException("connection");
+            var mustCloseConnection = false;
 
-            // Create a command and prepare it for execution
-            var cmd = connection.CreateCommand();
+            try
+            {
+                // Create a command and prepare it for execution
+                var cmd = connection.CreateCommand();
 
-            bool mustCloseConnection;
-            this.PrepareCommand(cmd, connection, null, commandType, commandText, commandParameters, out mustCloseConnection );
-    			
-            // Execute the command & return the results
-            var retval = cmd.ExecuteScalar();
-    			
-            // Detach the SqlParameters from the command object, so they can be used again
-            cmd.Parameters.Clear();
-            if( mustCloseConnection ) connection.Close();
+                this.PrepareCommand(cmd, connection, null, commandType, commandText, commandParameters, out mustCloseConnection);
 
-            return (T)retval;
+                // Execute the command & return the results
+                var retval = cmd.ExecuteScalar();
+
+                // Detach the SqlParameters from the command object, so they can be used again
+                cmd.Parameters.Clear();
+
+                return (T)retval;
+            }
+            finally 
+            {
+                if (mustCloseConnection && connection.State != ConnectionState.Closed) connection.Close();
+            }
         }
 
         #endregion	

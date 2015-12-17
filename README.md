@@ -155,7 +155,7 @@ class QueryWithParameters : ISqlQuery
 
 **Get DTO from query result**
 
-NET-Database query layer use my branch of Slapper.AutoMapper https://github.com/odelvalle/Slapper.AutoMapper on Github. This library can convert dynamic data into static types and populate complex nested child objects. 
+NET-Database query layer use my fork of Slapper.AutoMapper https://github.com/odelvalle/Slapper.AutoMapper on Github. This library can convert dynamic data into static types and populate complex nested child objects. 
 
 **Transform Query result to DTO**
 

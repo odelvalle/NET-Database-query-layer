@@ -5,7 +5,7 @@ A thin database layer to make more easy queries (.NET C#)
 NET-Database query layer components will be a useful addition to any application or website to create SQL queries to your database in a OO way. It supports the majority of different database types such as SQL Server® MySQL® o PostgreSQL®, but is easy extend to any ADO.NET provider.
 
 ###Is this an ORM?###
-No, NET-Dabase query layer only allow query to database and not include any persistence model.
+No, NET-Database query layer only allow query to database and not include any persistence model.
 
 ###Why use NET-Database query layer if I am using EntityFramework®, NHibernate® or ADO.NET?###
 In CQRS architectures, the persistence model (command model) is separated to query model. NET- Database query layer is perfect to implement the query model, allowing it to maintain in a different process or running on different hardware.

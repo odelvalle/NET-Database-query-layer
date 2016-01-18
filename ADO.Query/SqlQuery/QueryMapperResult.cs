@@ -1,5 +1,6 @@
 ﻿namespace ADO.Query.SqlQuery
 {
+    using System;
     using System.Collections.Generic;
     using ADO.Query.Mapper;
 
@@ -10,6 +11,8 @@
 
         public QueryMapperResult(IQueryMappers mapper, dynamic source)
         {
+            if (mapper == null) throw new ArgumentNullException("mapper", "Mapper can't be null in QueryMapperResult");
+
             this.mapper = mapper;
             this.source = source;
         }

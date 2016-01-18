@@ -1,24 +1,31 @@
 ﻿namespace ADO.Query.Extensions
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data;
     using System.Dynamic;
-    using System.Linq;
 
     public static class DataReaderToDynamic
     {
         public static IList<dynamic> ToDynamic(this IDataReader reader)
         {
-            var dynamicDr = new List<dynamic>();
-            while (reader.Read())
+            try
             {
-                var dyn = ToExpando(reader);
-                dynamicDr.Add(dyn);
-            }
+                var dynamicDr = new List<dynamic>();
+                while (reader.Read())
+                {
+                    var dyn = ToExpando(reader);
+                    dynamicDr.Add(dyn);
+                }
 
-            return dynamicDr;
+                return dynamicDr;
+            }
+            finally 
+            {
+                if (!reader.IsClosed)
+                {
+                    reader.Close();
+                }
+            }
         }
 
         private static dynamic ToExpando(IDataRecord record)

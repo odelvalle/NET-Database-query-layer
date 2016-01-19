@@ -1,6 +1,9 @@
 # NET-Database query layer
 A thin database layer to make more easy queries (.NET C#)
 
+<a href="https://www.nuget.org/packages/NET.Database.QueryLayer"><img src="https://img.shields.io/nuget/v/NET.Database.QueryLayer.svg" alt="NuGet Version" /></a> 
+<a href="https://www.nuget.org/packages/NET.Database.QueryLayer"><img src="https://img.shields.io/nuget/dt/NET.Database.QueryLayer.svg" alt="NuGet Download Count" /></a>
+
 ###What is it?###
 NET-Database query layer components will be a useful addition to any application or website to create SQL queries to your database in a OO way. It supports the majority of different database types such as SQL Server® MySQL® o PostgreSQL®, but is easy extend to any ADO.NET provider.
 

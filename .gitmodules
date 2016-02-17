@@ -1,0 +1,3 @@
+[submodule "Slapper.AutoMapper"]
+	path = Slapper.AutoMapper
+	url = https://github.com/SlapperAutoMapper/Slapper.AutoMapper

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
 
@@ -126,6 +127,31 @@
 
             Assert.IsNotNull(user.Phones);
             Assert.AreEqual(2, user.Phones.Count());
+        }
+
+        [TestMethod]
+        public void TestIntegrationPerformanceOneToManyMapperQuery()
+        {
+            var queryRunner = QueryRunner.CreateHelper("SqlAdoHelper", new QueryMapper());
+            var iterations = 50000;
+
+            var stopwatch = Stopwatch.StartNew();
+            for (var i = 0; i < iterations; i++)
+            {
+                var users = queryRunner.Execute<SimpleDto>(new QueryOneToMany()).ToList();
+
+                Assert.IsNotNull(users);
+                // ReSharper disable PossibleMultipleEnumeration
+                Assert.AreEqual(2, users.Count());
+
+                var user = users.First();
+                // ReSharper restore PossibleMultipleEnumeration
+
+                Assert.IsNotNull(user.Phones);
+                Assert.AreEqual(2, user.Phones.Count());
+            }
+
+            Trace.WriteLine(string.Format("Mapped {0} objects in {1} ms.", iterations, stopwatch.ElapsedMilliseconds));
         }
     }
 }

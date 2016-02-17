@@ -147,8 +147,10 @@ namespace ADO.Query.Helper
 
         public virtual QueryMapperResult<TResult> Execute<TResult>(ISqlQuery criterial) where TResult : class
         {
-            var dr = this.ExecuteReader(CommandType.Text, criterial.Expression, this.GetCriterialParameters(criterial.Parameters));
-            return new QueryMapperResult<TResult>(this.mapper, dr.ToDynamic());
+            using (var dr = this.ExecuteReader(CommandType.Text, criterial.Expression, this.GetCriterialParameters(criterial.Parameters)))
+            {
+                return new QueryMapperResult<TResult>(this.mapper, dr.ToDynamic());
+            }
         }
 
         public virtual PageSqlResult<TResult> Execute<TResult>(ISqlPagedQuery criterial) where TResult : class
@@ -158,8 +160,11 @@ namespace ADO.Query.Helper
             var total = this.ExecuteScalar<long>(CommandType.Text, criterial.SqlCount, dataParameters);
             var totalPages = total % criterial.ItemsPerPage == 0 ? total / criterial.ItemsPerPage : (total / criterial.ItemsPerPage) + 1;
 
-            var d = this.ExecuteReader(CommandType.Text, criterial.Expression, dataParameters);
-            var result = this.mapper.MapDynamicToList<TResult>((List<object>)d.ToDynamic());
+            IEnumerable<TResult> result;
+            using (var dr = this.ExecuteReader(CommandType.Text, criterial.Expression, dataParameters))
+            {
+                result = this.mapper.MapDynamicToList<TResult>((List<object>)dr.ToDynamic());
+            }
 
             return new PageSqlResult<TResult>
             {
@@ -251,7 +256,7 @@ namespace ADO.Query.Helper
             // Create a reader
 
             // Call ExecuteReader with the appropriate CommandBehavior
-            var dataReader = mustCloseConnection ? cmd.ExecuteReader() : cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            var dataReader = mustCloseConnection ? cmd.ExecuteReader(CommandBehavior.CloseConnection) : cmd.ExecuteReader();
 
             this.ClearCommand(cmd);
             return dataReader;

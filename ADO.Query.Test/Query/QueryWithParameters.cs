@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
 
-    using global::ADO.Query.SqlQuery;
+    using SqlQuery;
 
-    class QueryWithParameters : ISqlQuery
+    class QueryWithParameters : SqlQuery
     {
         public QueryWithParameters(int id, string name)
         {
@@ -16,9 +16,5 @@
                 {"name", name}
             };
         }
-
-        public string Expression { get; private set; }
-
-        public IDictionary<string, object> Parameters { get; private set; }
     }
 }

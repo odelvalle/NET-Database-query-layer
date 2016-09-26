@@ -1,18 +1,12 @@
 ﻿namespace ADO.Query.Test.Query
 {
-    using System.Collections.Generic;
+    using SqlQuery;
 
-    using global::ADO.Query.SqlQuery;
-
-    class QuerySimple : ISqlQuery
+    class QuerySimple : SqlQuery
     {
         public QuerySimple()
         {
             this.Expression = "select id as Id, name as Name from table_in_database";
         }
-
-        public string Expression { get; private set; }
-
-        public IDictionary<string, object> Parameters { get; private set; }
     }
 }

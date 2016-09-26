@@ -74,6 +74,8 @@
     <Compile Include="SqlQuery\ISqlQuery.cs" />
     <Compile Include="SqlQuery\PageSqlResult.cs" />
     <Compile Include="SqlQuery\QueryMapperResult.cs" />
+    <Compile Include="SqlQuery\SqlPagedQuery.cs" />
+    <Compile Include="SqlQuery\SqlQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,13 +1,9 @@
 ﻿
 namespace ADO.Query.Test.Query
 {
-    using System.Collections.Generic;
+    using SqlQuery;
 
-    using ADO.Query.Mapper;
-    using ADO.Query.SqlQuery;
-    using ADO.Query.Test.Query.Dto;
-
-    public class QueryPageSpecification : ISqlPagedQuery
+    public class QueryPageSpecification : SqlPagedQuery
     {
         public QueryPageSpecification(int page, int itemsPerPages)
         {
@@ -17,14 +13,5 @@ namespace ADO.Query.Test.Query
             this.ItemsPerPage = itemsPerPages;
             this.Page = page;
         }
-
-        public string Expression { get; private set; }
-        public IDictionary<string, object> Parameters { get; private set; }
-
-        public string SqlCount { get; private set; }
-
-        public int Page { get; private set; }
-
-        public int ItemsPerPage { get; private set; }
     }
 }

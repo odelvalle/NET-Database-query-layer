@@ -50,7 +50,7 @@ namespace ADO.Query.Helper
         {
             try
             {
-                var dict = ConfigurationManager.GetSection( "daProviders" ) as IDictionary;
+                var dict = ConfigurationManager.GetSection( "DataQueryProviders" ) as IDictionary;
                 if (dict == null) throw new NullReferenceException("Null Reference in DataAccess Provider configuration Session.");
 
                 var providerConfig = dict[ providerAlias ] as ProviderAlias;

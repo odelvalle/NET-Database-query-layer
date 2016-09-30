@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QueryBuilder", "QueryBuilder", "{AF4F465D-2356-433D-ABAE-6185CC65EDD7}"
 EndProject
@@ -15,6 +15,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QueryBuilder.Test", "QueryBuilder.Test", "{05B3A54B-E845-469C-9AF6-4668B930E039}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADO.Query.Test", "ADO.Query.Test\ADO.Query.Test.csproj", "{2E63D956-5B22-44CE-892E-CD5846A299D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADO.Query.MySql", "ADO.Query.MySql\ADO.Query.MySql.csproj", "{EEAB4A4A-16AB-40CB-8DE6-ADF889E69AF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADO.Query.SqlServer", "ADO.Query.SqlServer\ADO.Query.SqlServer.csproj", "{5A61F46D-08F1-41B6-A63F-891A9AB31530}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADO.Query.PgSql", "ADO.Query.PgSql\ADO.Query.PgSql.csproj", "{84FA1B7F-6839-478A-9FD0-0FFE2E328075}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +36,18 @@ Global
 		{2E63D956-5B22-44CE-892E-CD5846A299D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E63D956-5B22-44CE-892E-CD5846A299D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E63D956-5B22-44CE-892E-CD5846A299D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEAB4A4A-16AB-40CB-8DE6-ADF889E69AF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEAB4A4A-16AB-40CB-8DE6-ADF889E69AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEAB4A4A-16AB-40CB-8DE6-ADF889E69AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEAB4A4A-16AB-40CB-8DE6-ADF889E69AF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A61F46D-08F1-41B6-A63F-891A9AB31530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A61F46D-08F1-41B6-A63F-891A9AB31530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A61F46D-08F1-41B6-A63F-891A9AB31530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A61F46D-08F1-41B6-A63F-891A9AB31530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84FA1B7F-6839-478A-9FD0-0FFE2E328075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84FA1B7F-6839-478A-9FD0-0FFE2E328075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84FA1B7F-6839-478A-9FD0-0FFE2E328075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84FA1B7F-6839-478A-9FD0-0FFE2E328075}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,5 +55,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{98B19C37-0DA6-49E2-96CD-50C473451B8D} = {AF4F465D-2356-433D-ABAE-6185CC65EDD7}
 		{2E63D956-5B22-44CE-892E-CD5846A299D7} = {05B3A54B-E845-469C-9AF6-4668B930E039}
+		{EEAB4A4A-16AB-40CB-8DE6-ADF889E69AF0} = {AF4F465D-2356-433D-ABAE-6185CC65EDD7}
+		{5A61F46D-08F1-41B6-A63F-891A9AB31530} = {AF4F465D-2356-433D-ABAE-6185CC65EDD7}
+		{84FA1B7F-6839-478A-9FD0-0FFE2E328075} = {AF4F465D-2356-433D-ABAE-6185CC65EDD7}
 	EndGlobalSection
 EndGlobal

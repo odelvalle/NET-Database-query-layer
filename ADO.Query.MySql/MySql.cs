@@ -1,12 +1,11 @@
-namespace ADO.Query.Helper
+using System;
+using System.Data;
+using ADO.Query.Helper;
+using ADO.Query.Mapper;
+using MySql.Data.MySqlClient;
+
+namespace ADO.Query.MySql
 {
-    using System;
-    using System.Data;
-
-    using ADO.Query.Mapper;
-
-    using global::MySql.Data.MySqlClient;
-
     public sealed class MySql : QueryRunner
     {
         public MySql(IQueryMappers mapper) : base(mapper)

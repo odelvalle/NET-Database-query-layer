@@ -1,12 +1,12 @@
 ﻿
-namespace ADO.Query.Helper
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using ADO.Query.Helper;
+using ADO.Query.Mapper;
+
+namespace ADO.Query.SqlServer
 {
-    using System;
-    using System.Data;
-    using System.Data.SqlClient;
-
-    using ADO.Query.Mapper;
-
     public class MsSql : QueryRunner
     {
         public MsSql(IQueryMappers mapper) : base(mapper)

@@ -1,11 +1,12 @@
-﻿using System;
-using System.Data;
-using ADO.Query.Helper;
-using ADO.Query.Mapper;
-using Npgsql;
-
-namespace ADO.Query.PgSql
+﻿namespace ADO.Query.Helper
 {
+    using System;
+    using System.Data;
+
+    using ADO.Query.Mapper;
+
+    using Npgsql;
+
     /// <summary>
     /// Clase que hereda de AdoHelper e implementa los métodos necesarios para
     /// trabajar con Postgre como servidor de datos.

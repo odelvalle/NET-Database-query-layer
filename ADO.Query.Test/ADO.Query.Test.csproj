@@ -101,10 +101,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ADO.Query.MySql\ADO.Query.MySql.csproj">
-      <Project>{eeab4a4a-16ab-40cb-8de6-adf889e69af0}</Project>
-      <Name>ADO.Query.MySql</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ADO.Query\ADO.Query.csproj">
       <Project>{98b19c37-0da6-49e2-96cd-50c473451b8d}</Project>
       <Name>ADO.Query</Name>

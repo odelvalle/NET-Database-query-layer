@@ -24,12 +24,12 @@ More info about Command-query separation http://martinfowler.com/bliki/CommandQu
 **Microsoft SQL Server®**
 ```xml
 <configSections>
-	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
+	<section name="daProviders" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
 </configSections>
 
-<daProvider>
+<daProviders>
 	<daProvider alias="MsSQL" type="ADO.Query.Helper.MsSql, ADO.Query" connectionStringName="DBConnection" />
-</daProvider>
+</daProviders>
 
 <connectionStrings>
     <add name="DBConnection" connectionString="YOUR_CONNECTION_STRING" />
@@ -39,12 +39,12 @@ More info about Command-query separation http://martinfowler.com/bliki/CommandQu
 **MySQL®**
 ```xml
 <configSections>
-	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
+	<section name="daProviders" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
 </configSections>
 
-<daProvider>
+<daProviders>
 	<daProvider alias="MySQL" type="ADO.Query.Helper.MySql, ADO.Query" connectionStringName="DBConnection" />
-</daProvider>
+</daProviders>
 
 <connectionStrings>
 	<add name="DBConnection" connectionString="YOUR_CONNECTION_STRING" />
@@ -54,12 +54,12 @@ More info about Command-query separation http://martinfowler.com/bliki/CommandQu
 **PostgreSQL®**
 ```xml
 <configSections>
-	<section name="daProvider" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
+	<section name="daProviders" type="ADO.Query.Helper.DataAccessSectionHandler, ADO.Query" />
 </configSections>
 
-<daProvider>
+<daProviders>
 	<daProvider alias="PgSQL" type="ADO.Query.Helper.PgSql, ADO.Query" connectionStringName="DBConnection" />
-</daProvider>
+</daProviders>
 
 <connectionStrings>
 	<add name="DBConnection" connectionString="YOUR_CONNECTION_STRING" />

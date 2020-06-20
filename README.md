@@ -4,13 +4,13 @@ A thin database layer to make more easy queries (.NET C#)
 <a href="https://www.nuget.org/packages/NET.Database.QueryLayer"><img src="https://img.shields.io/nuget/v/NET.Database.QueryLayer.svg" alt="NuGet Version" /></a> 
 <a href="https://www.nuget.org/packages/NET.Database.QueryLayer"><img src="https://img.shields.io/nuget/dt/NET.Database.QueryLayer.svg" alt="NuGet Download Count" /></a>
 
-###What is it?###
+### What is it? ###
 NET-Database query layer components will be a useful addition to any application or website to create SQL queries to your database in a OO way. It supports the majority of different database types such as SQL Server® MySQL® o PostgreSQL®, but is easy extend to any ADO.NET provider.
 
-###Is this an ORM?###
+### Is this an ORM? ###
 No, NET-Database query layer only allow query to database and not include any persistence model.
 
-###Why use NET-Database query layer if I am using EntityFramework®, NHibernate® or ADO.NET?###
+### Why use NET-Database query layer if I am using EntityFramework®, NHibernate® or ADO.NET? ###
 In CQRS architectures, the persistence model (command model) is separated to query model. NET- Database query layer is perfect to implement the query model, allowing it to maintain in a different process or running on different hardware.
 
 More info about CQRS: http://martinfowler.com/bliki/CQRS.html
@@ -19,7 +19,7 @@ Other application is in Command-query separation principle: every method should 
 
 More info about Command-query separation http://martinfowler.com/bliki/CommandQuerySeparation.html
 
-###Configure NET-Database query layer. App.config or Web.config ###
+### Configure NET-Database query layer. App.config or Web.config ###
 
 **Microsoft SQL Server®**
 ```xml
@@ -66,7 +66,7 @@ More info about Command-query separation http://martinfowler.com/bliki/CommandQu
 </connectionStrings> 
 ```
 
-###How create instance of QueryRunner?###
+### How create instance of QueryRunner? ###
 NET-Database query layer implement factory pattern to determinate which type of class to create. 
 
 ```csharp
@@ -88,7 +88,7 @@ An override method of factory can be used without query mapper object parameter,
 var queryRunner = QueryRunner.CreateHelper("MsSQL");
 ```
 
-###Query Model###
+### Query Model ###
 
 All query model implement ISqlQuery Interface
 ```csharp
@@ -235,13 +235,13 @@ public class PageSqlResult<T>
 }
 ```
 
-###Store procedure support###
+### Store procedure support ###
 
 Store procedure is not supported at this moment.
 
 Enjoy ;)
 
-###License###
+### License ###
 
 MIT License:
 http://opensource.org/licenses/MIT

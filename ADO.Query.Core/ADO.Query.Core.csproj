@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>ADO.Query.Core</AssemblyName>
@@ -9,21 +9,30 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net47;net48;net6.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.0.0</Version>
+    <Version>3.0.1</Version>
     <Authors>Omar del Valle Rodriguez</Authors>
     <Description>NET-Database query layer components will be a useful addition to any application or website to create SQL queries to your database in a OO way. It supports the majority of different database types such as SQL Server® MySQL® o PostgreSQL®, but is easy extend to any ADO.NET provider.</Description>
     <Copyright>2016</Copyright>
     <PackageProjectUrl>https://github.com/iTravelMix/NET-Database-query-layer</PackageProjectUrl>
     <RepositoryUrl>https://github.com/iTravelMix/NET-Database-query-layer</RepositoryUrl>
-    <PackageReleaseNotes>- Update Slapper.AutoMapper to 3.0.0
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>- Fix vulnerable dependencies: Npgsql 4.1.13 and System.Text.Encodings.Web 4.7.2
+- Include README in the package
+- Fix assembly name in README configuration examples (ADO.Query.Core)
+- Update Slapper.AutoMapper to 3.0.0
 - Breaking: Slapper 3.0.0 scopes instance caches to each mapping call, eliminating cross-query instance reuse and cache collisions. The default QueryMapper no longer shares or merges instances across queries, even for the same destination type and Id; keepCache and RemoveCacheAfterExecuteQuery no longer control cross-query instance reuse.
 - Multi-target: netstandard2.0, netstandard2.1, net47, net48, net6.0, net8.0, net9.0, net10.0</PackageReleaseNotes>
-    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <AssemblyVersion>3.0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Npgsql" Version="4.1.3.1" />
+    <PackageReference Include="Npgsql" Version="4.1.13" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
     <PackageReference Include="Slapper.AutoMapper" Version="3.0.0" />
     <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />

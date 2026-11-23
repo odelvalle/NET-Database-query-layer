@@ -16,7 +16,7 @@
     <PackageProjectUrl>https://github.com/iTravelMix/NET-Database-query-layer</PackageProjectUrl>
     <RepositoryUrl>https://github.com/iTravelMix/NET-Database-query-layer</RepositoryUrl>
     <PackageReleaseNotes>- Update Slapper.AutoMapper to 3.0.0
-- Breaking: Slapper 3.0.0 fixes the instance cache collision, objects of different types with the same Id are no longer shared
+- Breaking: Slapper 3.0.0 scopes instance caches to each mapping call, eliminating cross-query instance reuse and cache collisions. The default QueryMapper no longer shares or merges instances across queries, even for the same destination type and Id; keepCache and RemoveCacheAfterExecuteQuery no longer control cross-query instance reuse.
 - Multi-target: netstandard2.0, netstandard2.1, net47, net48, net6.0, net8.0, net9.0, net10.0</PackageReleaseNotes>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
   </PropertyGroup>

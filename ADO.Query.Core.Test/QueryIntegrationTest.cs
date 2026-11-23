@@ -187,7 +187,7 @@
         }
 
         [TestMethod]
-        public void TestIntegrationGlobalCacheFailsResultMapperQuery()
+        public void TestIntegrationGlobalCacheResultMapperQuery()
         {
             QueryMapper.RemoveCacheAfterExecuteQuery = false;
 
@@ -198,7 +198,7 @@
             var phone = queryRunner.Execute(new QueryPhone(1)).ToSingle();
 
             Assert.AreEqual(1, phone.Id);
-            Assert.AreEqual(user.Name, phone.Name);
+            Assert.AreNotEqual(user.Name, phone.Name);
         }
 
         [TestMethod]

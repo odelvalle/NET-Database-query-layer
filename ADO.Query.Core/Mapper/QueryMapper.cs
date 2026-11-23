@@ -12,11 +12,6 @@
 
         #region Implementation of IMapper
 
-        public QueryMapper()
-        {
-            AutoMapper.Cache.ClearInstanceCache();
-        }
-
         public IEnumerable<TDestination> MapDynamicToEnumerable<TDestination>(List<object> source, bool keepCache = true) where TDestination : class
         {
             return (source != null) ? AutoMapper.MapDynamic<TDestination>(source, keepCache && !RemoveCacheAfterExecuteQuery) : null;
@@ -37,7 +32,6 @@
 
         public void Dispose()
         {
-            AutoMapper.Cache.ClearInstanceCache();
             GC.SuppressFinalize(this);
         }
     }

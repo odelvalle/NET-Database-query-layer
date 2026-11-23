@@ -7,6 +7,13 @@ A thin database layer to make more easy queries (.NET C#)
 ### What is it? ###
 NET-Database query layer components will be a useful addition to any application or website to create SQL queries to your database in a OO way. It supports the majority of different database types such as SQL Server® MySQL® o PostgreSQL®, but is easy extend to any ADO.NET provider.
 
+### Supported frameworks ###
+Compatible with every framework supported by Slapper.AutoMapper 3.0.0:
+
+- .NET Standard 2.0 and 2.1
+- .NET Framework 4.7 and 4.8
+- .NET 6, 8, 9 and 10
+
 ### Is this an ORM? ###
 No, NET-Database query layer only allow query to database and not include any persistence model.
 
